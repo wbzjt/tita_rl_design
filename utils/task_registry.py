@@ -11,8 +11,7 @@ from global_config import ROOT_DIR, ENVS_DIR
 from .helpers import get_args, update_cfg_from_args, class_to_dict, get_load_path, set_seed, parse_sim_params
 from configs import LeggedRobotCfg, LeggedRobotCfgPPO
 
-from rsl_rl.env import VecEnv
-from rsl_rl.runners import OnPolicyRunner
+from runner import OnPolicyRunner
 
 class TaskRegistry():
     def __init__(self):
@@ -123,12 +122,12 @@ class TaskRegistry():
             runner_class = eval(train_cfg.runner.runner_class_name)
             runner = runner_class(env, train_cfg_dict, log_dir, device=args.rl_device)
         #save resume path before creating a new log_dir
-        # resume = train_cfg.runner.resume
-        # if resume:
-        #     # load previously trained model
-        #     resume_path = get_load_path(log_root, load_run=train_cfg.runner.load_run, checkpoint=train_cfg.runner.checkpoint)
-        #     print(f"Loading model from: {resume_path}")
-        #     runner.load(resume_path)
+        resume = train_cfg.runner.resume
+        if resume:
+            # load previously trained model
+            resume_path = get_load_path(log_root, load_run=train_cfg.runner.load_run, checkpoint=train_cfg.runner.checkpoint)
+            print(f"Loading model from: {resume_path}")
+            runner.load(resume_path)
         return runner, train_cfg
 
 # make global task registry

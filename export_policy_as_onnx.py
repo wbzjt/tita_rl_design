@@ -5,7 +5,7 @@ import subprocess
 import isaacgym
 from envs import *
 from utils import get_args, task_registry, get_load_path, class_to_dict
-from rsl_rl.modules import ActorCritic, ActorCriticRecurrent
+from modules import ActorCritic, ActorCriticRecurrent
 
 import numpy as np
 import torch

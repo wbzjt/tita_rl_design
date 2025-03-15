@@ -65,11 +65,11 @@ def play(args):
     policy = ppo_runner.get_inference_policy(device=env.device)
     
     # export policy as a jit module (used to run it from C++)
-    if EXPORT_POLICY:
-        path = os.path.join(ROOT_DIR, 'logs', train_cfg.runner.experiment_name, 'exported', 'policies')
-        export_policy_as_jit(ppo_runner.alg.actor_critic, path)
-        print('Exported policy as jit script to: ', path)
-        export_policy_as_onnx(args)
+    # if EXPORT_POLICY:
+    #     path = os.path.join(ROOT_DIR, 'logs', train_cfg.runner.experiment_name, 'exported', 'policies')
+    #     export_policy_as_jit(ppo_runner.alg.actor_critic, path)
+    #     print('Exported policy as jit script to: ', path)
+    #     export_policy_as_onnx(args)
 
     logger = Logger(env.dt)
     robot_index = 0 # which robot is used for logging
