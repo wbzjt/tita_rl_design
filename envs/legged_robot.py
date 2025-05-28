@@ -425,6 +425,13 @@ class LeggedRobot(BaseTask):
         self.base_ang_vel[:] = quat_rotate_inverse(self.base_quat, self.root_states[:, 10:13])
         self.projected_gravity[:] = quat_rotate_inverse(self.base_quat, self.gravity_vec)
 
+        # update foot_velocities and foot_positions
+        self.foot_velocities = self.rigid_body_states[:,
+                               self.feet_indices,
+                               7:10]
+        self.foot_positions = self.rigid_body_states[:, self.feet_indices,
+                              0:3]
+        
         #self.roll, self.pitch, self.yaw = euler_from_quaternion(self.base_quat)
         contact = self.contact_forces[:, self.feet_indices, 2] > 1.
         self.contact_filt = torch.logical_or(contact, self.last_contacts) 
