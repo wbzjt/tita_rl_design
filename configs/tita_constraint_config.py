@@ -46,17 +46,17 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         lin_vel = [0.0, 0.0, 0.0]  # x, y, z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x, y, z [rad/s]       
         default_joint_angles = {
-                'joint_left_leg_1': 0,
-                'joint_right_leg_1': 0,
+                'left_roll_joint': 0,
+                'right_roll_joint': 0,
 
-                'joint_left_leg_2': 0.8,
-                'joint_right_leg_2': 0.8,
+                'left_pitch_joint': 0.8,
+                'right_pitch_joint': 0.8,
 
-                'joint_left_leg_3': -1.5,
-                'joint_right_leg_3': -1.5,
+                'left_knee_joint': -1.5,
+                'right_knee_joint': -1.5,
 
-                'joint_left_leg_4': 0,
-                'joint_right_leg_4': 0,
+                'left_wheel_joint': 0,
+                'right_wheel_joint': 0,
         }
 
 
@@ -89,10 +89,10 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
 
     class asset( LeggedRobotCfg.asset ):
 
-        file = '{ROOT_DIR}/resources/tita/urdf/tita_description.urdf'
-        foot_name = "leg_4"
-        name = "tita"
-        penalize_contacts_on = ["leg_3"]
+        file = '{ROOT_DIR}/resources/wheel_leg_v2/urdf/wheel_leg_v2.urdf'
+        foot_name = "wheel_link"
+        name = "wheel_leg_v2"
+        penalize_contacts_on = ["knee_link"]
         terminate_after_contacts_on = ["base"]
         self_collisions = 0 # 1 to disable, 0 to enable...bitwise filter
         flip_visual_attachments = False

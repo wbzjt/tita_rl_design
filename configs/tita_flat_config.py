@@ -29,14 +29,14 @@ class TitaFlatCfg(TitaRoughCfg):
         lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
         default_joint_angles = {  # target angles when action = 0.0
-            "joint_left_leg_1": -0.0,
-            "joint_right_leg_1": 0.0,
-            "joint_left_leg_2": 0.8,
-            "joint_right_leg_2": 0.8,
-            "joint_left_leg_3": -1.5,
-            "joint_right_leg_3": -1.5,
-            "joint_left_leg_4": 0.0,
-            "joint_right_leg_4": 0.0,
+            "left_roll_joint": 0.0,
+            "right_roll_joint": 0.0,
+            "left_pitch_joint": 0.0,
+            "right_pitch_joint": 0.0,
+            "left_knee_joint": 0.0,
+            "right_knee_joint": 0.0,
+            "left_wheel_joint": 0.0,
+            "right_wheel_joint": 0.0,
         }   
     
     class control(TitaRoughCfg.control):
@@ -45,24 +45,24 @@ class TitaFlatCfg(TitaRoughCfg):
                                  # and others use vecocity control.
         # PD Drive parameters:
         stiffness = {
-            "joint_left_leg_1": 30,
-            "joint_left_leg_2": 30,
-            "joint_left_leg_3": 30,
-            "joint_right_leg_1": 30,
-            "joint_right_leg_2": 30,
-            "joint_right_leg_3": 30,
-            "joint_left_leg_4": 0.0,
-            "joint_right_leg_4": 0.0,
+            "left_roll_joint": 30,
+            "left_pitch_joint": 30,
+            "left_knee_joint": 30,
+            "right_roll_joint": 30,
+            "right_pitch_joint": 30,
+            "right_knee_joint": 30,
+            "left_wheel_joint": 0.0,
+            "right_wheel_joint": 0.0,
         }  # [N*m/rad]
         damping = {
-            "joint_left_leg_1": 0.5,
-            "joint_left_leg_2": 0.5,
-            "joint_left_leg_3": 0.5,
-            "joint_right_leg_1": 0.5,
-            "joint_right_leg_2": 0.5,
-            "joint_right_leg_3": 0.5,
-            "joint_left_leg_4": 0.5,
-            "joint_right_leg_4": 0.5,
+            "left_roll_joint": 0.5,
+            "left_pitch_joint": 0.5,
+            "left_knee_joint": 0.5,
+            "right_roll_joint": 0.5,
+            "right_pitch_joint": 0.5,
+            "right_knee_joint": 0.5,
+            "left_wheel_joint": 0.5,
+            "right_wheel_joint": 0.5,
         }  # [N*m*s/rad]
         # action scale: target angle = actionscale * action + defaultangle
         # action_scale_pos is the action scale of joints that use position control
@@ -73,10 +73,10 @@ class TitaFlatCfg(TitaRoughCfg):
         decimation = 4       
 
     class asset(TitaRoughCfg.asset):
-        foot_name = "_leg_4"
+        foot_name = "_wheel_link"
         foot_radius = 0.095
-        penalize_contacts_on = ["base_link", "_leg_3"]
-        terminate_after_contacts_on = ["base_link", "_leg_3"]       
+        penalize_contacts_on = ["base_link", "left_knee_link", "right_knee_link"]
+        terminate_after_contacts_on = ["base_link", "left_knee_link", "right_knee_link"]     
         replace_cylinder_with_capsule = False       
         self_collisions = 0  # 1 to disable, 0 to enable...bitwise filter
     

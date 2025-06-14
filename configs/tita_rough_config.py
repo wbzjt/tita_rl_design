@@ -106,7 +106,7 @@ class TitaRoughCfg(BaseConfig):
         #     print("Error: Please set the ROBOT_TYPE using 'export ROBOT_TYPE=<robot_type>'.")
         #     sys.exit(1)
         
-        file = '{ROOT_DIR}/resources/tita/urdf/tita_description.urdf'
+        file = '{ROOT_DIR}/resources/wheel_leg_v2/urdf/wheel_leg_v2.urdf'
         name = 'tita'
         foot_name = '_leg_4'
         terminate_after_contacts_on = ["base_link", "_leg_3"]

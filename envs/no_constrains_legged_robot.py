@@ -151,6 +151,10 @@ class Tita:
         # step physics and render each frame
         self.render()
         for _ in range(self.cfg.control.decimation):
+
+            # torques_debug = self._compute_torques(self.actions)
+            # print("[DEBUG] computed torques shape:", torques_debug.shape)
+            # print("[DEBUG] self.torques.shape:", self.torques.shape)
             self.torques = self._compute_torques(self.actions).view(self.torques.shape)
             self.gym.set_dof_actuation_force_tensor(self.sim, gymtorch.unwrap_tensor(self.torques))
             self.gym.simulate(self.sim)
@@ -521,6 +525,14 @@ class Tita:
         Returns:
             [torch.Tensor]: Torques sent to the simulation
         """
+
+        # ### debug:
+        # print("[DEBUG] actions shape:", actions.shape, actions.device)
+        # print("[DEBUG] self.default_dof_pos shape:", self.default_dof_pos.shape, self.default_dof_pos.device)
+        # print("[DEBUG] self.dof_pos shape:", self.dof_pos.shape, self.dof_pos.device)
+        # print("[DEBUG] self.dof_vel shape:", self.dof_vel.shape, self.dof_vel.device)
+        # print("[DEBUG] self.d_gains shape:", self.d_gains.shape, self.d_gains.device)
+
         # pd controller
         action_scale_pos = self.cfg.control.action_scale_pos
         action_scale_vel = self.cfg.control.action_scale_vel
@@ -793,6 +805,9 @@ class Tita:
                 if self.cfg.control.control_type in ["P", "V"]:
                     print(f"PD gain of joint {name} were not defined, setting them to zero")
         self.default_dof_pos = self.default_dof_pos.unsqueeze(0)
+        ## debug
+        # self.default_dof_pos = self.default_dof_pos.unsqueeze(0).repeat(self.num_envs, 1)
+
 
     def _prepare_reward_function(self):
         """ Prepares a list of reward functions, whcih will be called to compute the total reward.
