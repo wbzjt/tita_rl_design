@@ -1,5 +1,5 @@
 *.pyc
-logs/
+# logs/
 *.pt
 !tita_example_10000.pt
 *.mp4
