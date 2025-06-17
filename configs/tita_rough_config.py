@@ -106,11 +106,12 @@ class TitaRoughCfg(BaseConfig):
         #     print("Error: Please set the ROBOT_TYPE using 'export ROBOT_TYPE=<robot_type>'.")
         #     sys.exit(1)
         
-        file = '{ROOT_DIR}/resources/wheel_leg_v2/urdf/wheel_leg_v2.urdf'
-        name = 'tita'
-        foot_name = '_leg_4'
-        terminate_after_contacts_on = ["base_link", "_leg_3"]
-        penalize_contacts_on = ["base_link", "_leg_3"]
+
+        file = '{ROOT_DIR}/resources/wheel_leg_v3/urdf/wheel_leg_v3.urdf'
+        name = 'wheel_leg_v3'
+        foot_name = '_wheel_link'
+        terminate_after_contacts_on = ["base_link", "_knee_link"]
+        penalize_contacts_on = ["base_link", "_knee_link"]
         disable_gravity = False
         collapse_fixed_joints = True  # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
         fix_base_link = False  # fixe the base of the robot

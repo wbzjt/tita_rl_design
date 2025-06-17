@@ -134,4 +134,4 @@ class TitaFlatCfgPPO(TitaRoughCfgPPO):
 
     class runner(TitaRoughCfgPPO.runner):
         experiment_name = 'tita_flat'
-        max_iterations = 10000
+        max_iterations = 30000

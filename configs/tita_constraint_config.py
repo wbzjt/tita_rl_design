@@ -89,9 +89,9 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
 
     class asset( LeggedRobotCfg.asset ):
 
-        file = '{ROOT_DIR}/resources/wheel_leg_v2/urdf/wheel_leg_v2.urdf'
+        file = '{ROOT_DIR}/resources/wheel_leg_v3/urdf/wheel_leg_v3.urdf'
         foot_name = "wheel_link"
-        name = "wheel_leg_v2"
+        name = "wheel_leg_v3"
         penalize_contacts_on = ["knee_link"]
         terminate_after_contacts_on = ["base"]
         self_collisions = 0 # 1 to disable, 0 to enable...bitwise filter
