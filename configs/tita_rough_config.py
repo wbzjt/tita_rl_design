@@ -2,7 +2,7 @@ from configs import BaseConfig
 
 class TitaRoughCfg(BaseConfig):
     class env:
-        num_envs = 8192
+        num_envs = 4096
         num_propriceptive_obs = 27 + 2 + 2
         num_privileged_obs = 152  # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise
         num_actions = 8
@@ -56,7 +56,7 @@ class TitaRoughCfg(BaseConfig):
         lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
         default_joint_angles = {  # target angles when action = 0.0
-            "joint_left_leg_1": -0.0,
+            "joint_left_leg_1": 0.0,
             "joint_right_leg_1": 0.0,
             "joint_left_leg_2": 1.3,
             "joint_right_leg_2": 1.3,
@@ -107,8 +107,8 @@ class TitaRoughCfg(BaseConfig):
         #     sys.exit(1)
         
 
-        file = '{ROOT_DIR}/resources/wheel_leg_v3/urdf/wheel_leg_v3.urdf'
-        name = 'wheel_leg_v3'
+        file = '{ROOT_DIR}/resources/wheel_leg_v5/urdf/wheel_leg_v5.urdf'
+        name = 'wheel_leg_v5'
         foot_name = '_wheel_link'
         terminate_after_contacts_on = ["base_link", "_knee_link"]
         penalize_contacts_on = ["base_link", "_knee_link"]
