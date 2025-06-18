@@ -33,13 +33,19 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="../meshes/base_link.STL" />
+      </geometry>
+    </collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.017"/>
+      <geometry>
+        <box size="0.47 0.3 0.19"/>
       </geometry>
     </collision>
   </link>
@@ -73,7 +79,7 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
@@ -81,7 +87,7 @@
         <mesh
           filename="../meshes/left_roll_link.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="left_roll_joint"
@@ -131,13 +137,19 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="../meshes/left_pitch_link.STL" />
+      </geometry>
+    </collision> -->
+    <collision>
+      <origin rpy="0 0 -0.131" xyz="0.1 0.021 -0.002"/>
+      <geometry>
+        <box size="0.2 0.07 0.05"/>
       </geometry>
     </collision>
   </link>
@@ -189,13 +201,20 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="../meshes/left_knee_link.STL" />
+      </geometry>
+    </collision>
+ -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.034" radius="0.0925"/>
       </geometry>
     </collision>
   </link>
@@ -305,7 +324,7 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
@@ -313,7 +332,7 @@
         <mesh
           filename="../meshes/right_roll_link.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="right_roll_joint"
@@ -363,7 +382,7 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
@@ -371,7 +390,7 @@
         <mesh
           filename="../meshes/right_pitch_link.STL" />
       </geometry>
-    </collision>
+    </collision> -->
   </link>
   <joint
     name="right_pitch_joint"
@@ -421,13 +440,19 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="../meshes/right_knee_link.STL" />
+      </geometry>
+    </collision> -->
+    <collision>
+      <origin rpy="0 0 -0.131" xyz="0.1 0.021 -0.002"/>
+      <geometry>
+        <box size="0.2 0.07 0.05"/>
       </geometry>
     </collision>
   </link>
@@ -479,13 +504,19 @@
           rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
-    <collision>
+    <!-- <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
           filename="../meshes/right_wheel_link.STL" />
+      </geometry>
+    </collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.034" radius="0.0925"/>
       </geometry>
     </collision>
   </link>
