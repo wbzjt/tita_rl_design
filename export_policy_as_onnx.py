@@ -60,7 +60,7 @@ def export_policy_as_onnx(args):
 
 def convert_onnx_to_engine(engine_path):
     onnx_path = engine_path.replace(".engine", ".onnx")
-    trtexec_path = "/usr/src/tensorrt/bin/trtexec"
+    trtexec_path = "/usr/local/TensorRT-10.8.0.43/targets/x86_64-linux-gnu/bin/trtexec"
 
     command = [
         trtexec_path,
