@@ -1,7 +1,7 @@
 *.pyc
 logs/*
-!logs/tita_flat/
-!logs/tita_flat/Jun15_04-19-06*/
+# !logs/tita_flat/
+# !logs/tita_flat/Jun15_04-19-06*/
 # !tita_example_10000.pt
 *.mp4
 *.json
