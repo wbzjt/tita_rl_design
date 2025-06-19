@@ -23,19 +23,19 @@ class TitaFlatCfg(TitaRoughCfg):
             ang_vel_yaw = [-3.14, 3.14]  # 角速度yaw的范围
 
     class init_state(TitaRoughCfg.init_state):
-        pos = [0.0, 0.0, 0.34]  # 初始位置 [x, y, z] [m]
+        pos = [0.0, 0.0, 0.24]  # 初始位置 [x, y, z] [m]
         rot = [0.0, 0.0, 0.0, 1.0]  # 初始旋转 [x, y, z, w] [四元数]
         lin_vel = [0.0, 0.0, 0.0]  # 初始线速度 [x, y, z] [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # 初始角速度 [x, y, z] [rad/s]
         default_joint_angles = {  # 默认关节角度，当动作为0.0时的目标角度
-            "left_roll_joint": 0.0,
-            "right_roll_joint": 0.0,
-            "left_pitch_joint": 0.8,
-            "right_pitch_joint": 0.8,
-            "left_knee_joint": -1.5,
-            "right_knee_joint": -1.5,
-            "left_wheel_joint": 0.0,
-            "right_wheel_joint": 0.0,
+            "joint_left_leg_1": 0.0,
+            "joint_right_leg_1": 0.0,
+            "joint_left_leg_2": 0.8,
+            "joint_right_leg_2": 0.8,
+            "joint_left_leg_3": -1.5,
+            "joint_right_leg_3": -1.5,
+            "joint_left_leg_4": 0.0,
+            "joint_right_leg_4": 0.0,
         }   
     
     class control(TitaRoughCfg.control):
@@ -44,24 +44,24 @@ class TitaFlatCfg(TitaRoughCfg):
                                  # and others use vecocity control.
         # PD Drive parameters:
         stiffness = {
-            "left_roll_joint": 30,
-            "left_pitch_joint": 30,
-            "left_knee_joint": 30,
-            "right_roll_joint": 30,
-            "right_pitch_joint": 30,
-            "right_knee_joint": 30,
-            "left_wheel_joint": 0.0,
-            "right_wheel_joint": 0.0,
+            "joint_left_leg_1": 20,
+            "joint_left_leg_2": 20,
+            "joint_left_leg_3": 20,
+            "joint_right_leg_1": 20,
+            "joint_right_leg_2": 20,
+            "joint_right_leg_3": 20,
+            "joint_left_leg_4": 0.0,
+            "joint_right_leg_4": 0.0,
         }  # [N*m/rad]
         damping = {
-            "left_roll_joint": 0.5,
-            "left_pitch_joint": 0.5,
-            "left_knee_joint": 0.5,
-            "right_roll_joint": 0.5,
-            "right_pitch_joint": 0.5,
-            "right_knee_joint": 0.5,
-            "left_wheel_joint": 0.5,
-            "right_wheel_joint": 0.5,
+            "joint_left_leg_1": 0.3,
+            "joint_left_leg_2": 0.3,
+            "joint_left_leg_3": 0.3,
+            "joint_right_leg_1": 0.3,
+            "joint_right_leg_2": 0.3,
+            "joint_right_leg_3": 0.3,
+            "joint_left_leg_4": 0.3,
+            "joint_right_leg_4": 0.3,
         }  # [N*m*s/rad]
         # action scale: target angle = actionscale * action + defaultangle
         # action_scale_pos is the action scale of joints that use position control
@@ -72,10 +72,10 @@ class TitaFlatCfg(TitaRoughCfg):
         decimation = 4       
 
     class asset(TitaRoughCfg.asset):
-        foot_name = "_wheel_link"
+        foot_name = "_leg_4"
         foot_radius = 0.095
-        penalize_contacts_on = ["base_link", "left_knee_link", "right_knee_link"]
-        terminate_after_contacts_on = ["base_link", "left_knee_link", "right_knee_link"]     
+        penalize_contacts_on = ["base_link", "left_leg_3", "right_leg_3"]
+        terminate_after_contacts_on = ["base_link", "left_leg_3", "right_leg_3"]     
         replace_cylinder_with_capsule = False       
         self_collisions = 0  # 1 to disable, 0 to enable...bitwise filter
     
@@ -108,17 +108,17 @@ class TitaFlatCfg(TitaRoughCfg):
             stand_still = -1.0 # 不奖励静止状态，可能导致机器人不动。
             feet_contact_forces = 0.0 # off 接触力未计入奖励。
             feet_distance = -100 # -100 	脚之间的水平距离不合适时惩罚很大。
-            survival = 0.1 # 生存奖励，鼓励机器人尽可能长时间存活。
+            survival = 0.3 # 生存奖励，鼓励机器人尽可能长时间存活。
             # new added
             wheel_adjustment = 1.0 # 1.0 off 轮子调整奖励，鼓励轮子在地面上保持适当位置。
             inclination = 0.0 # off 倾斜奖励，可能会导致机器人在倾斜地面上不稳定。
-            leg_symmetry = 10.0 # 10.0 鼓励腿部对称性，促进平衡和稳定。
+            leg_symmetry = 12.0 # 10.0 鼓励腿部对称性，促进平衡和稳定。
 
-        base_height_target = 0.4
+        base_height_target = 0.281 # 基础高度目标，机器人应尽量保持在此高度。
         soft_dof_pos_limit = 0.95  # percentage of urdf limits, values above this limit are penalized
         soft_dof_vel_limit = 1.0
-        min_feet_distance = 0.57
-        max_feet_distance = 0.60
+        min_feet_distance = 0.44
+        max_feet_distance = 0.46
         tracking_sigma = 0.1 # tracking reward = exp(-error^2/sigma)
         nominal_foot_position_tracking_sigma = 0.005
         nominal_foot_position_tracking_sigma_wrt_v = 0.5

@@ -2,7 +2,7 @@ from configs import BaseConfig
 
 class TitaRoughCfg(BaseConfig):
     class env:
-        num_envs = 8192
+        num_envs = 100
         num_propriceptive_obs = 27 + 2 + 2
         num_privileged_obs = 152  # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise
         num_actions = 8
@@ -107,11 +107,11 @@ class TitaRoughCfg(BaseConfig):
         #     sys.exit(1)
         
 
-        file = '{ROOT_DIR}/resources/wheel_leg_v5/urdf/wheel_leg_v5.urdf'
-        name = 'wheel_leg_v5'
+        file = '{ROOT_DIR}/resources/wheel_leg_v6/urdf/wheel_leg_v6.urdf'
+        name = 'wheel_leg_v6'
         foot_name = '_wheel_link'
-        terminate_after_contacts_on = ["base_link", "_knee_link"]
-        penalize_contacts_on = ["base_link", "_knee_link"]
+        penalize_contacts_on = ["base_link", "_leg_3"]
+        terminate_after_contacts_on = ["base_link", "_leg_3"] 
         disable_gravity = False
         collapse_fixed_joints = True  # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
         fix_base_link = False  # fixe the base of the robot

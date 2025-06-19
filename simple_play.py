@@ -191,7 +191,7 @@ def play_no_constraint_policy_runner(args):
 
 
 if __name__ == '__main__':
-    EXPORT_POLICY = False
+    EXPORT_POLICY = True
     RECORD_FRAMES = False
     MOVE_CAMERA = False
 
