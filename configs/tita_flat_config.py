@@ -3,32 +3,31 @@ from configs import TitaRoughCfg, TitaRoughCfgPPO
 
 class TitaFlatCfg(TitaRoughCfg):
     class env(TitaRoughCfg.env):
-        num_privileged_obs = 27 + 2 + 2
-        num_propriceptive_obs = 27 + 2 + 2 # plus 2 dof vel(wheels) and 2 actions(wheels)
-        num_actions = 8
+        num_privileged_obs = 27 + 2 + 2  # 总特权观察数，包括27个基本观察和2个轮子速度观察
+        num_propriceptive_obs = 27 + 2 + 2  # 总自我感知观察数，包括27个基本观察、2个轮子速度和2个动作
+        num_actions = 8  # 动作空间维度，表示可执行的动作数量
 
     class terrain(TitaRoughCfg.terrain):
-        mesh_type = "plane"
-        measure_heights_critic = False
+        mesh_type = "plane"  # 地形类型，设置为平面
+        measure_heights_critic = False  # 是否在评论中测量高度
 
     class commands(TitaRoughCfg.commands):
-        num_commands = 3
-        heading_command = False
-        resampling_time = 5.
+        num_commands = 3  # 命令数量
+        heading_command = False  # 是否启用航向命令
+        resampling_time = 5.  # 重采样时间间隔
 
         class ranges(TitaRoughCfg.commands.ranges):
-            lin_vel_x = [-1.0, 1.0]  # min max [m/s]
-            heading = [-1.0, 1.0]
-            lin_vel_y = [0, 0]
-            ang_vel_yaw = [-3.14, 3.14]
-    
+            lin_vel_x = [-1.0, 1.0]  # 线速度x的最小和最大值 [m/s]
+            heading = [-1.0, 1.0]  # 航向的范围
+            lin_vel_y = [0, 0]  # 线速度y的范围
+            ang_vel_yaw = [-3.14, 3.14]  # 角速度yaw的范围
+
     class init_state(TitaRoughCfg.init_state):
-        # pos = [0.0, 0.0, 0.8] # origin
-        pos = [0.0, 0.0, 0.34]  # x,y,z [m]
-        rot = [0.0, 0.0, 0.0, 1.0]  # x,y,z,w [quat]
-        lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
-        ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
-        default_joint_angles = {  # target angles when action = 0.0
+        pos = [0.0, 0.0, 0.34]  # 初始位置 [x, y, z] [m]
+        rot = [0.0, 0.0, 0.0, 1.0]  # 初始旋转 [x, y, z, w] [四元数]
+        lin_vel = [0.0, 0.0, 0.0]  # 初始线速度 [x, y, z] [m/s]
+        ang_vel = [0.0, 0.0, 0.0]  # 初始角速度 [x, y, z] [rad/s]
+        default_joint_angles = {  # 默认关节角度，当动作为0.0时的目标角度
             "left_roll_joint": 0.0,
             "right_roll_joint": 0.0,
             "left_pitch_joint": 0.8,
