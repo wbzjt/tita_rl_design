@@ -2,7 +2,7 @@ from configs import BaseConfig
 
 class TitaRoughCfg(BaseConfig):
     class env:
-        num_envs = 100
+        num_envs = 16384
         num_propriceptive_obs = 27 + 2 + 2
         num_privileged_obs = 152  # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise
         num_actions = 8

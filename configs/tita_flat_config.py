@@ -23,7 +23,7 @@ class TitaFlatCfg(TitaRoughCfg):
             ang_vel_yaw = [-3.14, 3.14]  # 角速度yaw的范围
 
     class init_state(TitaRoughCfg.init_state):
-        pos = [0.0, 0.0, 0.24]  # 初始位置 [x, y, z] [m]
+        pos = [0.0, 0.0, 0.25]  # 初始位置 [x, y, z] [m]
         rot = [0.0, 0.0, 0.0, 1.0]  # 初始旋转 [x, y, z, w] [四元数]
         lin_vel = [0.0, 0.0, 0.0]  # 初始线速度 [x, y, z] [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # 初始角速度 [x, y, z] [rad/s]
@@ -44,24 +44,24 @@ class TitaFlatCfg(TitaRoughCfg):
                                  # and others use vecocity control.
         # PD Drive parameters:
         stiffness = {
-            "joint_left_leg_1": 20,
-            "joint_left_leg_2": 20,
-            "joint_left_leg_3": 20,
-            "joint_right_leg_1": 20,
-            "joint_right_leg_2": 20,
-            "joint_right_leg_3": 20,
+            "joint_left_leg_1": 30,
+            "joint_left_leg_2": 30,
+            "joint_left_leg_3": 30,
+            "joint_right_leg_1": 30,
+            "joint_right_leg_2": 30,
+            "joint_right_leg_3": 30,
             "joint_left_leg_4": 0.0,
             "joint_right_leg_4": 0.0,
         }  # [N*m/rad]
         damping = {
-            "joint_left_leg_1": 0.3,
-            "joint_left_leg_2": 0.3,
-            "joint_left_leg_3": 0.3,
-            "joint_right_leg_1": 0.3,
-            "joint_right_leg_2": 0.3,
-            "joint_right_leg_3": 0.3,
-            "joint_left_leg_4": 0.3,
-            "joint_right_leg_4": 0.3,
+            "joint_left_leg_1": 0.5,
+            "joint_left_leg_2": 0.5,
+            "joint_left_leg_3": 0.5,
+            "joint_right_leg_1": 0.5,
+            "joint_right_leg_2": 0.5,
+            "joint_right_leg_3": 0.5,
+            "joint_left_leg_4": 0.5,
+            "joint_right_leg_4": 0.5,
         }  # [N*m*s/rad]
         # action scale: target angle = actionscale * action + defaultangle
         # action_scale_pos is the action scale of joints that use position control
