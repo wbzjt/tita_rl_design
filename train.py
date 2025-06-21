@@ -16,6 +16,8 @@ def train(args):
     env, env_cfg = task_registry.make_env(name=args.task, args=args)
     ppo_runner, train_cfg = task_registry.make_alg_runner(env=env, name=args.task, args=args)
 
+
+
     # Define the log path and task configuration folder path
     logs_path = os.path.join(ROOT_DIR, "logs")
     task_config_folder = os.path.join(logs_path, f"{args.task}")
@@ -36,4 +38,6 @@ if __name__ == '__main__':
     task_registry.register("tita_rough", Tita, TitaRoughCfg(), TitaRoughCfgPPO())
 
     args = get_args()
+
+
     train(args)
