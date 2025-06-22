@@ -538,6 +538,7 @@ class Tita:
         action_scale_vel = self.cfg.control.action_scale_vel
         control_type = self.cfg.control.control_type
         if control_type == "P_AND_V":
+            # 前6个关节：位置控制
             torques = self.p_gains * (
                     action_scale_pos* actions + self.default_dof_pos - self.dof_pos) - self.d_gains * self.dof_vel
             # Choose joints to V control.

@@ -11,7 +11,7 @@
         xyz="0.0458054888502351 -6.39335121090792E-05 0.0213461234505319"
         rpy="0 0 0" />
       <mass
-        value="13.010" />
+        value="3.010" />
       <inertia
         ixx="0.027943"
         ixy="0.000000074"
@@ -161,8 +161,8 @@
     <axis
       xyz="0 0 -1" />
     <limit
-      lower="-1.919862"
-      upper="3.490659"
+      lower="-3.14"
+      upper="3.14"
       effort="45"
       velocity="25" />
   </joint>
@@ -206,9 +206,9 @@
       </geometry>
     </collision> -->
     <collision>
-      <origin rpy="0 0 0" xyz="0.1 0 0.018"/>
+      <origin rpy="0 0 0" xyz="0.085 0 0.018"/>
       <geometry>
-        <box size="0.23 0.07 0.05"/>
+        <box size="0.20 0.07 0.05"/>
       </geometry>
     </collision>
   </link>
@@ -225,8 +225,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-2.670354"
-      upper="-0.698132"
+      lower="-3.14"
+      upper="3.14"
       effort="45"
       velocity="25" />
   </joint>
@@ -405,8 +405,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-1.919862"
-      upper="3.490659"
+      lower="-3.14"
+      upper="3.14"
       effort="45"
       velocity="25" />
   </joint>
@@ -450,9 +450,9 @@
       </geometry>
     </collision> -->
     <collision>
-      <origin rpy="0 0 0" xyz="0.1 0 0.018"/>
+      <origin rpy="0 0 0" xyz="0.085 0 0.018"/>
       <geometry>
-        <box size="0.23 0.07 0.05"/>
+        <box size="0.20 0.07 0.05"/>
       </geometry>
     </collision>
   </link>
@@ -469,8 +469,8 @@
     <axis
       xyz="0 0 -1" />
     <limit
-      lower="-2.670354"
-      upper="-0.698132"
+      lower="-3.14"
+      upper="3.14"
       effort="45"
       velocity="25" />
   </joint>

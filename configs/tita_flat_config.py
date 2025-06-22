@@ -17,7 +17,7 @@ class TitaFlatCfg(TitaRoughCfg):
         resampling_time = 5.  # 重采样时间间隔
 
         class ranges(TitaRoughCfg.commands.ranges):
-            lin_vel_x = [0.0, 1.0]  # 线速度x的最小和最大值 [m/s]
+            lin_vel_x = [-1.0, 0.0]  # 线速度x的最小和最大值 [m/s]
             heading = [-1.0, 1.0]  # 航向的范围
             lin_vel_y = [0, 0]  # 线速度y的范围
             ang_vel_yaw = [-3.14, 3.14]  # 角速度yaw的范围
@@ -28,12 +28,12 @@ class TitaFlatCfg(TitaRoughCfg):
         lin_vel = [0.0, 0.0, 0.0]  # 初始线速度 [x, y, z] [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # 初始角速度 [x, y, z] [rad/s]
         default_joint_angles = {  # 默认关节角度，当动作为0.0时的目标角度
-            "joint_left_leg_1": 0.48,
-            "joint_right_leg_1": -0.48,
-            "joint_left_leg_2": 0.78,
-            "joint_right_leg_2": 0.78,
-            "joint_left_leg_3": -2.2,
-            "joint_right_leg_3": -2.2,
+            "joint_left_leg_1": 0.44,
+            "joint_right_leg_1": -0.44,
+            "joint_left_leg_2": -1.9,
+            "joint_right_leg_2": -1.9,
+            "joint_left_leg_3": 2.4,
+            "joint_right_leg_3": 2.4,
             "joint_left_leg_4": 0.0,
             "joint_right_leg_4": 0.0,
         }   
@@ -94,7 +94,7 @@ class TitaFlatCfg(TitaRoughCfg):
             dof_vel = 0.0 # off # 关节速度不计入奖励。
             dof_acc = -2.5e-06 # 轻微惩罚关节加速度变化，有利于平滑控制。
             action_rate = -0.01 # 轻微惩罚动作变化，促进平稳运动。
-            collision = -20.0 # 强烈惩罚碰撞，防止机器人与地面或其他物体发生碰撞。
+            collision = -15.0 # 强烈惩罚碰撞，防止机器人与地面或其他物体发生碰撞。
             termination = 0.0 # off 终止奖励不计入，可能会导致过早终止。
             dof_pos_limits = -2.0 # 轻微惩罚关节位置超出限制，促进关节在安全范围内运动。
             torque_limits = 0.0 # off不惩罚扭矩限制，可能会导致过度使用电机。
@@ -108,7 +108,7 @@ class TitaFlatCfg(TitaRoughCfg):
             stand_still = -1.0 # 不奖励静止状态，可能导致机器人不动。
             feet_contact_forces = 0.0 # off 接触力未计入奖励。
             feet_distance = -100 # -100 	脚之间的水平距离不合适时惩罚很大。
-            survival = 0.1 # 生存奖励，鼓励机器人尽可能长时间存活。
+            survival = 0.3 # 生存奖励，鼓励机器人尽可能长时间存活。
             # new added
             wheel_adjustment = 1.1 # 1.0 off 轮子调整奖励，鼓励轮子在地面上保持适当位置。
             inclination = 0.0 # off 倾斜奖励，可能会导致机器人在倾斜地面上不稳定。
