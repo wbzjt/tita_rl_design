@@ -32,7 +32,7 @@ from configs.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 from global_config import ROOT_DIR
 class TitaConstraintRoughCfg( LeggedRobotCfg ):
     class env(LeggedRobotCfg.env):
-        num_envs =  200# number of environments
+        num_envs = 200
 
         n_scan = 187
         n_priv_latent =  4 + 1 + 8 + 8 + 8 + 6 + 1 + 2 + 1 - 3
@@ -41,19 +41,31 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         num_observations = n_proprio + n_scan + history_len*n_proprio + n_priv_latent
 
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.30] # x,y,z [m]
+        pos = [0.0, 0.0, 0.21] # x,y,z [m]
         rot = [0, 0.0, 0.0, 1]  # x, y, z, w [quat]
         lin_vel = [0.0, 0.0, 0.0]  # x, y, z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x, y, z [rad/s]       
         default_joint_angles = {
+            # 'joint_left_leg_1': 0,
+            # 'joint_right_leg_1': 0,
+
+            # 'joint_left_leg_2': 0.8,
+            # 'joint_right_leg_2': 0.8,
+
+            # 'joint_left_leg_3': -1.5,
+            # 'joint_right_leg_3': -1.5,
+
+            # 'joint_left_leg_4': 0,
+            # 'joint_right_leg_4': 0,
+
             'joint_left_leg_1': 0,
             'joint_right_leg_1': 0,
 
-            'joint_left_leg_2': -0.8,
-            'joint_right_leg_2': -0.8,
+            'joint_left_leg_2': -0.9,
+            'joint_right_leg_2': -0.9,
 
-            'joint_left_leg_3': 1.5,
-            'joint_right_leg_3': 1.5,
+            'joint_left_leg_3': 1.7,
+            'joint_right_leg_3': 1.7,
 
             'joint_left_leg_4': 0,
             'joint_right_leg_4': 0,
@@ -82,15 +94,18 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         global_reference = False
 
         class ranges:
+            # lin_vel_x = [0.0, 1.0]  # min max [m/s]
             lin_vel_x = [-1.0, 0.0]  # min max [m/s]
-            lin_vel_y = [-0, 0]  # min max [m/s]
+
+            lin_vel_y = [-0.0, 0.0]  # min max [m/s]
             ang_vel_yaw = [-1, 1]  # min max [rad/s]
             heading = [-3.14, 3.14]
 
     class asset( LeggedRobotCfg.asset ):
 
-        # file = '{ROOT_DIR}/resources/wheel_leg_v6/urdf/wheel_leg_v6.urdf'
-        file = '{ROOT_DIR}/resources/tita/urdf/tita_description.urdf'
+        # file = '{ROOT_DIR}/resources/tita/urdf/tita_description.urdf'
+        file = '{ROOT_DIR}/resources/wheel_leg_v6/urdf/wheel_leg_v6.urdf'
+
         foot_name = "leg_4"
         name = "tita"
         penalize_contacts_on = ["leg_3"]
@@ -108,7 +123,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
             tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5
             lin_vel_z = -0.0
-            ang_vel_xy = -0.05 
+            ang_vel_xy = -0.05
             dof_vel = 0.0
             dof_acc = -2.5e-7
             base_height = -1.0
@@ -121,14 +136,14 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
             foot_clearance= -0.0
             orientation=-1.0
 
-    class domain_rand( LeggedRobotCfg.domain_rand):# 域随机化，提高模型的泛化能力和鲁棒性
-        randomize_friction = True # 
+    class domain_rand( LeggedRobotCfg.domain_rand):
+        randomize_friction = True
         friction_range = [0.2, 2.75]
-        randomize_restitution = True # 随机化弹性系数
+        randomize_restitution = True
         restitution_range = [0.0,1.0]
-        randomize_base_mass = True # 随机化机器人质量
+        randomize_base_mass = True
         added_mass_range = [-1., 3.]
-        randomize_base_com = True # 随机化质心位置
+        randomize_base_com = True
         added_com_range = [-0.1, 0.1]
         push_robots = True
         push_interval_s = 15
@@ -198,7 +213,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         num_costs = 6
     
     class terrain(LeggedRobotCfg.terrain):
-        mesh_type = 'trimesh'  # "heightfield" # none, plane, heightfield or trimesh
+        mesh_type = 'plane'  # "heightfield" # none, plane, heightfield or trimesh
         measure_heights = True
         include_act_obs_pair_buf = False
 
@@ -238,7 +253,7 @@ class TitaConstraintRoughCfgPPO( LeggedRobotCfgPPO ):
         policy_class_name = 'ActorCriticBarlowTwins'
         runner_class_name = 'OnConstraintPolicyRunner'
         algorithm_class_name = 'NP3O'
-        max_iterations = 800000
+        max_iterations = 10000
         num_steps_per_env = 24
         resume = False
         resume_path = 'tita_example_10000.pt'
