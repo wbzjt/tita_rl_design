@@ -105,8 +105,8 @@
     <limit
       lower="-3.14"
       upper="3.14"
-      effort="54"
-      velocity="25" />
+      effort="540"
+      velocity="250" />
   </joint>
   <link
     name="left_leg_2">
@@ -163,8 +163,8 @@
     <limit
       lower="-3.14"
       upper="3.14"
-      effort="14"
-      velocity="25" />
+      effort="140"
+      velocity="250" />
   </joint>
   <link
     name="left_leg_3">
@@ -227,8 +227,8 @@
     <limit
       lower="-3.14"
       upper="3.14"
-      effort="7"
-      velocity="25" />
+      effort="70"
+      velocity="250" />
   </joint>
   <link
     name="left_leg_4">
@@ -291,8 +291,8 @@
     <limit
       lower="-999999"
       upper="999999"
-      effort="7"
-      velocity="20" />
+      effort="70"
+      velocity="200" />
   </joint>
   <link
     name="right_leg_1">
@@ -349,8 +349,8 @@
     <limit
       lower="-0.7854"
       upper="0.785398"
-      effort="54"
-      velocity="25" />
+      effort="540"
+      velocity="250" />
   </joint>
   <link
     name="right_leg_2">
@@ -407,8 +407,8 @@
     <limit
       lower="-3.14"
       upper="3.14"
-      effort="14"
-      velocity="25" />
+      effort="140"
+      velocity="250" />
   </joint>
   <link
     name="right_leg_3">
@@ -471,8 +471,8 @@
     <limit
       lower="-3.14"
       upper="3.14"
-      effort="7"
-      velocity="25" />
+      effort="70"
+      velocity="250" />
   </joint>
   <link
     name="right_leg_4">
@@ -535,7 +535,7 @@
     <limit
       lower="-999999"
       upper="999999"
-      effort="7"
-      velocity="20" />
+      effort="70"
+      velocity="200" />
   </joint>
 </robot>

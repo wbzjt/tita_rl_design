@@ -454,6 +454,9 @@ class LeggedRobot(BaseTask):
         self.last_torques[:] = self.torques[:]
         self.last_root_vel[:] = self.root_states[:, 7:13]
 
+        if False: # self.cfg.debug.torque_monitor:
+            self._debug_torque_monitor()
+
         if self.viewer and self.enable_viewer_sync and self.debug_viz:
             self._draw_debug_vis()
 
@@ -1032,6 +1035,71 @@ class LeggedRobot(BaseTask):
             cv2.imshow("Depth Image", self.depth_buffer[self.lookat_id, -1].cup().numpy() + 0.5)
             cv2.waitKey(1) 
 
+
+
+
+    def _debug_torque_monitor(self):
+        """调试模式下的力矩监控"""
+        # 监控配置
+        monitor_env_id = 0  # 监控第0个环境
+        interval_seconds = 0.1  # 每0.5秒显示一次
+        monitor_interval = int(interval_seconds / self.dt)
+        
+        # 初始化计数器
+        if not hasattr(self, 'debug_torque_counter'):
+            self.debug_torque_counter = 0
+        
+        self.debug_torque_counter += 1
+        
+        if self.debug_torque_counter % monitor_interval == 0:
+            torques = self.torques[monitor_env_id].cpu().numpy()
+            actions = self.actions[monitor_env_id].cpu().numpy()
+            joint_pos = self.dof_pos[monitor_env_id].cpu().numpy()
+            joint_vel = self.dof_vel[monitor_env_id].cpu().numpy()
+            
+            print(f"\n🔧 === Debug Torque Monitor (Time: {self.debug_torque_counter * self.dt:.2f}s) ===")
+            print(f"Environment: {monitor_env_id}")
+            
+            joint_names = ['joint_left_leg_1', 'joint_right_leg_1', 
+                        'joint_left_leg_2', 'joint_right_leg_2',
+                        'joint_left_leg_3', 'joint_right_leg_3',
+                        'joint_left_leg_4', 'joint_right_leg_4']
+            
+            print(f"{'Joint Name':20} {'Torque':>8} {'Action':>8} {'Position':>8} {'Velocity':>8} {'Status':>8}")
+            print("-" * 70)
+            
+            for i, name in enumerate(joint_names):
+                torque = torques[i]
+                action = actions[i]
+                pos = joint_pos[i]
+                vel = joint_vel[i]
+                
+                # 状态判断
+                if abs(torque) > 10.0:
+                    status = "⚠️ HIGH"
+                elif abs(torque) > 8.0:
+                    status = "🟡 MED"
+                else:
+                    status = "✅ OK"
+                
+                print(f"{name:20} {torque:8.3f} {action:8.3f} {pos:8.3f} {vel:8.3f} {status:>8}")
+            
+            # 统计信息
+            max_torque = np.max(np.abs(torques))
+            avg_torque = np.mean(np.abs(torques))
+            
+            print("-" * 70)
+            print(f"Max |Torque|: {max_torque:8.3f} N*m")
+            print(f"Avg |Torque|: {avg_torque:8.3f} N*m")
+            
+            # 警告信息
+            if max_torque > 10.0:
+                print("🚨 WARNING: Torque exceeds motor limit (10 N*m)!")
+            elif max_torque > 8.0:
+                print("⚠️  CAUTION: Torque approaching limit")
+            
+        print("🔧 =" * 35)
+
     def _init_height_points(self):
         """ Returns points at which the height measurments are sampled (in base frame)
 
@@ -1047,6 +1115,110 @@ class LeggedRobot(BaseTask):
         points[:, :, 0] = grid_x.flatten()
         points[:, :, 1] = grid_y.flatten()
         return points
+
+# def _debug_torque_monitor(self):
+#     """高级调试模式下的力矩监控"""
+#     # 监控配置 - 可以通过配置文件控制
+#     if not hasattr(self.cfg, 'debug') or not getattr(self.cfg.debug, 'enable_torque_monitor', True):
+#         return
+    
+#     monitor_env_id = getattr(self.cfg.debug, 'monitor_env_id', 0)
+#     interval_seconds = getattr(self.cfg.debug, 'torque_monitor_interval', 0.5)
+#     monitor_interval = int(interval_seconds / self.dt)
+    
+#     # 初始化计数器和历史数据
+#     if not hasattr(self, 'debug_torque_counter'):
+#         self.debug_torque_counter = 0
+#         self.debug_torque_history = []
+    
+#     self.debug_torque_counter += 1
+    
+#     if self.debug_torque_counter % monitor_interval == 0:
+#         # 获取当前数据
+#         env_id = min(monitor_env_id, self.num_envs - 1)  # 防止越界
+#         torques = self.torques[env_id].cpu().numpy()
+#         actions = self.actions[env_id].cpu().numpy()
+#         joint_pos = self.dof_pos[env_id].cpu().numpy()
+#         joint_vel = self.dof_vel[env_id].cpu().numpy()
+        
+#         # 保存历史数据
+#         self.debug_torque_history.append({
+#             'time': self.debug_torque_counter * self.dt,
+#             'torques': torques.copy(),
+#             'max_torque': np.max(np.abs(torques))
+#         })
+        
+#         # 只保留最近20条记录
+#         if len(self.debug_torque_history) > 20:
+#             self.debug_torque_history.pop(0)
+        
+#         # 显示当前状态
+#         self._print_torque_status(env_id, torques, actions, joint_pos, joint_vel)
+        
+#         # 显示趋势分析
+#         if len(self.debug_torque_history) >= 5:
+#             self._print_torque_trend()
+
+# def _print_torque_status(self, env_id, torques, actions, joint_pos, joint_vel):
+#     """打印当前力矩状态"""
+#     current_time = self.debug_torque_counter * self.dt
+    
+#     print(f"\n🔧 === Torque Monitor (T={current_time:.1f}s, Env={env_id}) ===")
+    
+#     joint_names = ['L_hip', 'R_hip', 'L_thigh', 'R_thigh', 
+#                    'L_calf', 'R_calf', 'L_wheel', 'R_wheel']
+    
+#     print(f"{'Joint':8} {'Torque':>8} {'%Limit':>6} {'Action':>8} {'Pos':>8} {'Vel':>8}")
+#     print("-" * 55)
+    
+#     for i, name in enumerate(joint_names):
+#         torque = torques[i]
+#         torque_percent = abs(torque) / 10.0 * 100  # 假设10N*m为限制
+#         action = actions[i]
+#         pos = joint_pos[i]
+#         vel = joint_vel[i]
+        
+#         print(f"{name:8} {torque:8.3f} {torque_percent:5.1f}% {action:8.3f} {pos:8.3f} {vel:8.3f}")
+    
+#     max_torque = np.max(np.abs(torques))
+#     print(f"\nMax: {max_torque:.3f} N*m ({max_torque/10*100:.1f}% of limit)")
+
+# def _print_torque_trend(self):
+#     """打印力矩趋势分析"""
+#     if len(self.debug_torque_history) < 2:
+#         return
+    
+#     recent_max = [h['max_torque'] for h in self.debug_torque_history[-5:]]
+#     current_max = recent_max[-1]
+#     prev_max = recent_max[-2]
+#     avg_max = np.mean(recent_max)
+    
+#     trend = "📈" if current_max > prev_max else "📉" if current_max < prev_max else "➡️"
+    
+#     print(f"Trend: {trend} Current: {current_max:.3f}, Avg(5): {avg_max:.3f}")
+    
+#     # 警告
+#     if current_max > 10.0:
+#         print("🚨 CRITICAL: Torque exceeds motor limit!")
+#     elif current_max > 8.5:
+#         print("⚠️  WARNING: Torque near limit!")
+#     elif avg_max > 7.0:
+#         print("📊 INFO: Average torque high")
+#     def _init_height_points(self):
+#         """ Returns points at which the height measurments are sampled (in base frame)
+
+#         Returns:
+#             [torch.Tensor]: Tensor of shape (num_envs, self.num_height_points, 3)
+#         """
+#         y = torch.tensor(self.cfg.terrain.measured_points_y, device=self.device, requires_grad=False)
+#         x = torch.tensor(self.cfg.terrain.measured_points_x, device=self.device, requires_grad=False)
+#         grid_x, grid_y = torch.meshgrid(x, y)
+
+#         self.num_height_points = grid_x.numel()
+#         points = torch.zeros(self.num_envs, self.num_height_points, 3, device=self.device, requires_grad=False)
+#         points[:, :, 0] = grid_x.flatten()
+#         points[:, :, 1] = grid_y.flatten()
+#         return points
     
     def _get_heights(self, env_ids=None):
         """ Samples heights of the terrain at required points around each robot.

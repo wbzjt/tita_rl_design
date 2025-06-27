@@ -32,7 +32,7 @@ from configs.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 from global_config import ROOT_DIR
 class TitaConstraintRoughCfg( LeggedRobotCfg ):
     class env(LeggedRobotCfg.env):
-        num_envs = 200
+        num_envs = 2048
 
         n_scan = 187
         n_priv_latent =  4 + 1 + 8 + 8 + 8 + 6 + 1 + 2 + 1 - 3
@@ -41,11 +41,12 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         num_observations = n_proprio + n_scan + history_len*n_proprio + n_priv_latent
 
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.21] # x,y,z [m]
+        pos = [0.0, 0.0, 0.26] # x,y,z [m]
         rot = [0, 0.0, 0.0, 1]  # x, y, z, w [quat]
         lin_vel = [0.0, 0.0, 0.0]  # x, y, z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x, y, z [rad/s]       
         default_joint_angles = {
+
             # 'joint_left_leg_1': 0,
             # 'joint_right_leg_1': 0,
 
@@ -61,11 +62,11 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
             'joint_left_leg_1': 0,
             'joint_right_leg_1': 0,
 
-            'joint_left_leg_2': -0.9,
-            'joint_right_leg_2': -0.9,
+            'joint_left_leg_2': -0.7,
+            'joint_right_leg_2': -0.7,
 
-            'joint_left_leg_3': 1.7,
-            'joint_right_leg_3': 1.7,
+            'joint_left_leg_3': 1.4,
+            'joint_right_leg_3': 1.4,
 
             'joint_left_leg_4': 0,
             'joint_right_leg_4': 0,
@@ -75,7 +76,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         control_type = 'P'
-        stiffness = {'joint': 40}  # [N*m/rad]
+        stiffness = {'joint': 30}  # [N*m/rad]
         damping = {'joint': 1.0}     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.5
@@ -119,22 +120,23 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         class scales( LeggedRobotCfg.rewards.scales ):
             torques = 0.0
             powers = -2e-5
-            termination = -200
-            tracking_lin_vel = 1.0
-            tracking_ang_vel = 0.5
+            termination = 0.0 # off 终止奖励不计入，可能会导致过早终止。
+            tracking_lin_vel = 5.0 # 跟踪线速度奖励，促进机器人沿目标速度移动。
+            tracking_ang_vel = 2.0 # off 角速度跟踪奖励，促进机器人沿目标角速度旋转。
             lin_vel_z = -0.0
             ang_vel_xy = -0.05
             dof_vel = 0.0
             dof_acc = -2.5e-7
-            base_height = -1.0
+            base_height = -20.0 # 强烈惩罚base高度偏离目标高度
             feet_air_time = 0.0
-            collision = -1.0
+            collision = -15.0 # 强烈惩罚碰撞，防止机器人与地面或其他物体发生碰撞。
             feet_stumble = 0.0
             action_rate = -0.01
             action_smoothness= 0
-            stand_still = 0.0
+            stand_still = -1.0 # 不奖励静止状态，可能导致机器人不动。
             foot_clearance= -0.0
-            orientation=-1.0
+            orientation=-6.0
+
 
     class domain_rand( LeggedRobotCfg.domain_rand):
         randomize_friction = True
@@ -189,23 +191,23 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
     # constraint出处
     class costs:  # costs for the constraint
         class scales: 
-            pos_limit = 0.05 # 位置限制约束
-            torque_limit = 0.05 # 力矩限制约束
-            dof_vel_limits = 0.05 # 速度限制约束
+            pos_limit = 0.0001 # 位置限制约束
+            torque_limit = 0.0001 # 力矩限制约束
+            dof_vel_limits = 0.0001 # 速度限制约束
             # vel_smoothness = 0.1 
-            acc_smoothness = 0.02 # 加速度平滑约束
+            acc_smoothness = 0.0000000001
             #collision = 0.1
-            feet_contact_forces = 0.02 # 足部接触力约束
-            stumble = 0.1 # 6个成本约束
+            feet_contact_forces = 0.0001 # 足部接触力约束
+            stumble = 0.001 # 6个成本约束
         class d_values:
-            pos_limit = 0.1
-            torque_limit = 0.2
-            dof_vel_limits = 0.05
+            pos_limit = 1.0
+            torque_limit = 1.0
+            dof_vel_limits = 0.5
             # vel_smoothness = 0.0
-            acc_smoothness = 0.05
+            acc_smoothness = 200.0
             #collision = 0.0
-            feet_contact_forces = 0.05
-            stumble = 0.05
+            feet_contact_forces = 0.5
+            stumble = 0.2
 
  
     
@@ -253,7 +255,7 @@ class TitaConstraintRoughCfgPPO( LeggedRobotCfgPPO ):
         policy_class_name = 'ActorCriticBarlowTwins'
         runner_class_name = 'OnConstraintPolicyRunner'
         algorithm_class_name = 'NP3O'
-        max_iterations = 10000
+        max_iterations = 100000
         num_steps_per_env = 24
         resume = False
         resume_path = 'tita_example_10000.pt'
