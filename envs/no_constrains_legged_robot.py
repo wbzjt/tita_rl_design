@@ -549,6 +549,19 @@ class Tita:
             raise NameError(f"Unknown controller type: {control_type}")
         return torch.clip(torques, -self.torque_limits, self.torque_limits)
 
+        # for(int i = 0; i < 8; i++)
+        # {
+        #     if(i % 4 == 3)
+        #     {
+        #     _data->low_cmd->tau_cmd[i] = 0.5 * desired_pos[i] + 0.5 * (0 - _data->low_state->dq[i]);
+        #     }
+        #     else
+        #     {
+        #     _data->low_cmd->tau_cmd[i] = 30 * (desired_pos[i] - _data->low_state->q[i]) + 0.5 * (0 - _data->low_state->dq[i]);
+        #     }
+        # }
+
+
     def _reset_dofs(self, env_ids):
         """ Resets DOF position and velocities of selected environments
         Positions are randomly selected within 0.5:1.5 x default positions.

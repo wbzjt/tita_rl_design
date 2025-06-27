@@ -23,19 +23,22 @@ class TitaFlatCfg(TitaRoughCfg):
             ang_vel_yaw = [-3.14, 3.14]  # 角速度yaw的范围
 
     class init_state(TitaRoughCfg.init_state):
-        pos = [0.0, 0.0, 0.09]  # 初始位置 [x, y, z] [m]
+        pos = [0.0, 0.0, 0.30]  # 初始位置 [x, y, z] [m]
         rot = [0.0, 0.0, 0.0, 1.0]  # 初始旋转 [x, y, z, w] [四元数]
         lin_vel = [0.0, 0.0, 0.0]  # 初始线速度 [x, y, z] [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # 初始角速度 [x, y, z] [rad/s]
         default_joint_angles = {  # 默认关节角度，当动作为0.0时的目标角度
-            "joint_left_leg_1": 0.44,
-            "joint_right_leg_1": -0.44,
-            "joint_left_leg_2": -1.9,
-            "joint_right_leg_2": -1.9,
-            "joint_left_leg_3": 2.4,
-            "joint_right_leg_3": 2.4,
-            "joint_left_leg_4": 0.0,
-            "joint_right_leg_4": 0.0,
+            'joint_left_leg_1': 0,
+            'joint_right_leg_1': 0,
+
+            'joint_left_leg_2': -0.8,
+            'joint_right_leg_2': -0.8,
+
+            'joint_left_leg_3': 1.5,
+            'joint_right_leg_3': 1.5,
+
+            'joint_left_leg_4': 0,
+            'joint_right_leg_4': 0,
         }   
     
     class control(TitaRoughCfg.control):
@@ -133,4 +136,4 @@ class TitaFlatCfgPPO(TitaRoughCfgPPO):
 
     class runner(TitaRoughCfgPPO.runner):
         experiment_name = 'tita_flat'
-        max_iterations = 12000
+        max_iterations = 80000
