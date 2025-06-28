@@ -38,6 +38,8 @@ def delete_files_in_directory(directory_path):
      print("Error occurred while deleting files.")
 
 def play_on_constraint_policy_runner(args):
+
+    # print(policy)
     env_cfg, train_cfg = task_registry.get_cfgs(name=args.task)
     # override some parameters for testing
     env_cfg.env.num_envs = min(env_cfg.env.num_envs, 100)
@@ -71,9 +73,26 @@ def play_on_constraint_policy_runner(args):
                                                       env.num_actions,
                                                       **policy_cfg_dict)
     print(policy)
+
+
     #model_dict = torch.load(os.path.join(ROOT_DIR, 'model_4000_phase2_hip.pt'))
-    model_dict = torch.load(os.path.join(ROOT_DIR, 'tita_example_10000.pt'))
-    policy.load_state_dict(model_dict['model_state_dict'])
+
+    # model_dict = torch.load(os.path.join(ROOT_DIR, 'tita_example_10000.pt'))
+    # policy.load_state_dict(model_dict['model_state_dict'])
+
+    # 改为：
+    model_dict = torch.load(os.path.join(ROOT_DIR, 'tita_example_10000.pt'), weights_only=False)
+
+    # 过滤不匹配的权重
+    policy_state_dict = policy.state_dict()
+    filtered_dict = {k: v for k, v in model_dict['model_state_dict'].items() 
+                    if k in policy_state_dict and policy_state_dict[k].shape == v.shape}
+
+    print(f"成功匹配 {len(filtered_dict)} / {len(model_dict['model_state_dict'])} 个权重")
+    policy.load_state_dict(filtered_dict, strict=False)
+
+
+
     policy = policy.to(env.device)
     policy.save_torch_jit_policy('model.pt',env.device)
 

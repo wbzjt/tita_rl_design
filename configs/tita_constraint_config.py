@@ -41,7 +41,8 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
         num_observations = n_proprio + n_scan + history_len*n_proprio + n_priv_latent
 
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.26] # x,y,z [m]
+        # pos = [0.0, 0.0, 0.34] # x,y,z [m]
+        pos = [0.0, 0.0, 0.20] # x,y,z [m]
         rot = [0, 0.0, 0.0, 1]  # x, y, z, w [quat]
         lin_vel = [0.0, 0.0, 0.0]  # x, y, z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x, y, z [rad/s]       
@@ -59,14 +60,14 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
             # 'joint_left_leg_4': 0,
             # 'joint_right_leg_4': 0,
 
-            'joint_left_leg_1': 0,
-            'joint_right_leg_1': 0,
+            'joint_left_leg_1': -0.0,
+            'joint_right_leg_1': 0.00,
 
-            'joint_left_leg_2': -0.7,
-            'joint_right_leg_2': -0.7,
+            'joint_left_leg_2': -0.8,
+            'joint_right_leg_2': -0.8,
 
-            'joint_left_leg_3': 1.4,
-            'joint_right_leg_3': 1.4,
+            'joint_left_leg_3': 1.5,
+            'joint_right_leg_3': 1.5,
 
             'joint_left_leg_4': 0,
             'joint_right_leg_4': 0,
@@ -76,7 +77,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         control_type = 'P'
-        stiffness = {'joint': 30}  # [N*m/rad]
+        stiffness = {'joint': 40}  # [N*m/rad]
         damping = {'joint': 1.0}     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.5
@@ -109,14 +110,16 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
 
         foot_name = "leg_4"
         name = "tita"
-        penalize_contacts_on = ["leg_3"]
-        terminate_after_contacts_on = ["base"]
+        penalize_contacts_on = ["base_link", "left_leg_3", "right_leg_3"]
+        terminate_after_contacts_on = ["base_link", "left_leg_3", "right_leg_3"] 
         self_collisions = 0 # 1 to disable, 0 to enable...bitwise filter
         flip_visual_attachments = False
   
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.9
-        base_height_target = 0.261
+        # base_height_target = 0.4
+        base_height_target = 0.255
+
         class scales( LeggedRobotCfg.rewards.scales ):
             torques = 0.0
             powers = -2e-5
@@ -195,7 +198,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
             torque_limit = 0.0001 # 力矩限制约束
             dof_vel_limits = 0.0001 # 速度限制约束
             # vel_smoothness = 0.1 
-            acc_smoothness = 0.0000000001
+            # acc_smoothness = 0.0000000001
             #collision = 0.1
             feet_contact_forces = 0.0001 # 足部接触力约束
             stumble = 0.001 # 6个成本约束
@@ -204,7 +207,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
             torque_limit = 1.0
             dof_vel_limits = 0.5
             # vel_smoothness = 0.0
-            acc_smoothness = 200.0
+            # acc_smoothness = 200.0
             #collision = 0.0
             feet_contact_forces = 0.5
             stumble = 0.2
@@ -212,7 +215,7 @@ class TitaConstraintRoughCfg( LeggedRobotCfg ):
  
     
     class cost:
-        num_costs = 6
+        num_costs = 5
     
     class terrain(LeggedRobotCfg.terrain):
         mesh_type = 'plane'  # "heightfield" # none, plane, heightfield or trimesh
@@ -244,7 +247,7 @@ class TitaConstraintRoughCfgPPO( LeggedRobotCfgPPO ):
         rnn_num_layers = 1
 
         tanh_encoder_output = False
-        num_costs = 6
+        num_costs = 5
 
         teacher_act = True
         imi_flag = True

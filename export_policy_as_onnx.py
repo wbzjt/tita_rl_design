@@ -80,5 +80,7 @@ def convert_onnx_to_engine(engine_path):
 if __name__ == '__main__':
     task_registry.register("tita_flat", Tita, TitaFlatCfg(), TitaFlatCfgPPO())
     task_registry.register("tita_rough", Tita, TitaRoughCfg(), TitaRoughCfgPPO())
+    # task_registry.register("tita_constraint", Tita, TitaConstraintRoughCfg(), TitaConstraintRoughCfgPPO())
+
     args = get_args()
     export_policy_as_onnx(args)
